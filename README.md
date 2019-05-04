@@ -1,6 +1,6 @@
 # Data-Structures-Final-Project
 Final project for data structures 
-Following is the breakdown of all that which I am supposed to do in the project
+Following is the breakdown of all that which I am supposed to do in the project\n
 The graph 
 - [ ] has n vertices
 - [ ] has a vertex of degree k
