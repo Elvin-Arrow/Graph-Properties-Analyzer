@@ -2,7 +2,7 @@
 #include <fstream>
 
 using namespace std;
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
 struct Node{
 	char data;
 	Node *next;
@@ -285,6 +285,7 @@ int main(int argc, char** argv) {
 
     //Get input
     inFile >> x;
+
 
   	for(int j = 2; j < x.size(); j+=2){
   		Node *temp = new Node;
