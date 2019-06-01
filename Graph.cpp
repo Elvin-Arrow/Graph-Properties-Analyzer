@@ -11,6 +11,13 @@ struct edges{
 	char terminal;
 	edges * next;
 };
+
+struct degree_count{
+	int degree;
+	int count;
+	degree_count * next;
+};
+
 int degree(Node * vertex){
 	int count = -1;
 	while(vertex != NULL){
@@ -18,6 +25,88 @@ int degree(Node * vertex){
 		vertex = vertex->next;
 	}
 	return count;
+}
+degree_count * countOfAllDegrees(Node * graph[], int ver){
+	int deg;
+	
+	degree_count * dc1_start = NULL;
+	degree_count * dc1_end = NULL;
+	
+	for(int i = 0; i < ver; i++){
+		deg = degree(graph[i]);
+		degree_count * trav = dc1_start;
+		bool exists = false;
+		while(trav != NULL){
+			if(trav->degree == deg){
+				trav->count++;
+				exists = true;
+				break;
+			}
+			trav = trav->next;
+		}
+		if(! exists){
+			degree_count * temp = new degree_count;
+			temp->degree = deg;
+			temp->count = 1;
+			
+			if(dc1_start == NULL){
+				dc1_start = temp;
+				dc1_end = temp;
+				dc1_end->next = NULL;
+			}
+			else{
+				dc1_end->next = temp;
+				dc1_end = temp;
+				dc1_end->next = NULL;
+			}
+		}
+		
+	}
+	
+	return dc1_start;
+}
+
+int length(degree_count * t){
+	int l = 0;
+	degree_count * trav = t;
+	while(trav != NULL){
+		l++;
+		trav = trav->next;
+	}
+	return l;
+}
+
+bool equalCountOfEqualDegrees(degree_count * dc1, degree_count * dc2){
+	int len_dc1 = length(dc1);
+	int len_dc2 = length(dc2);
+	bool result;
+	if(len_dc1 == len_dc2){
+		degree_count * trav1 = dc1;
+		while(trav1 != NULL){
+			int degri = trav1->degree;
+			int cnt = trav1->count;
+			
+			degree_count * trav2 = dc2;
+			bool found = false;
+			while(dc2 != NULL){
+				if(trav2->degree == degri && trav2->count == cnt){
+					found = true;
+					break;
+				}
+				trav2 = trav2->next;	
+			}
+			if(found)
+				trav1 = trav1->next;
+			else
+				break;
+		}
+		
+		if(trav1 == NULL)
+			result = true;
+		else
+			result = false;
+	}
+	return result;
 }
 int sum_of_degrees(Node * graph[], int ver){
 	int sum = 0;
@@ -202,7 +291,7 @@ int main(int argc, char** argv) {
 	Node * start_G2 = temp1;
 	Node * end_G2 = temp1;
 	end_G2->next = NULL;
-		cout << "Vertex " << Graph2[i]->data << " is connected to how many vertices?: ";
+		cout << "Vertex " << Graph2[i]->data << " is initial to how many terminal vertices?: ";
 		int to_how_many;
 		cin >> to_how_many;
 		cout << "Enter the name of those vertices: " << endl;
@@ -261,10 +350,7 @@ int main(int argc, char** argv) {
 	else
 		cout << "Graph 1 and Graph 2 dont contain equal edges!" << endl;
 	
-	//if(connected(Graph2,vertices) && connected(Graph1,vertices) ){
-	//	cout << "The Graphs are connected!" << endl;
-	//}
-	
+	//checking if the graph is connected or not
 	bool conn = true;
 	for(int i = 0; i < vertices; i++){
 		if(! connected(Graph1,vertices,i)){
@@ -285,6 +371,15 @@ int main(int argc, char** argv) {
 	if(conn){
 		cout << "The Graphs are connected!" << endl;
 	}
+	// Checking if graphs have m vertices with degree k
+	degree_count * dc1 = countOfAllDegrees(Graph1,vertices);
+	degree_count * dc2 = countOfAllDegrees(Graph2,vertices);
+	if(equalCountOfEqualDegrees(dc1,dc2)){
+		cout << "The graphs contain equal vertices with equal degrees!" << endl;
+	}
+	else
+		cout << "The graphs dont have equal vertices with equal degrees!" << endl;
+	
 	
 	return 0;
 }
