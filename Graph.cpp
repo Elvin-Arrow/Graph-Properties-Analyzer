@@ -19,12 +19,29 @@ struct degree_count{
 };
 
 int degree(Node * vertex){
+	Node * temp = vertex;
 	int count = -1;
-	while(vertex != NULL){
+	while(temp != NULL){
 		count ++;
-		vertex = vertex->next;
+		temp = temp->next;
 	}
 	return count;
+}
+
+int in_degree(char a,Node * graph[],int vertices){
+	int dg = 0;
+	for(int i = 0; i < vertices; i++){
+		Node * trv = graph[i];
+		if(trv != NULL)
+		while(trv->next != NULL){
+			
+			if(trv->next->data == a)
+				dg++;
+			trv = trv->next;
+		}
+		
+	}
+	return dg;
 }
 degree_count * countOfAllDegrees(Node * graph[], int ver){
 	int deg;
@@ -146,6 +163,26 @@ bool is_directed(edges * e, Node * graph[], int vertices){
 	}
 	return directed;
 }
+
+bool Euilar_exists(edges * e,Node * graph[],int vertices){
+	bool exists = true;
+	if(! is_directed(e,graph,vertices)){
+		for(int i = 0; i < vertices; i++){
+			int j = degree(graph[i]);
+			if(j%2 != 0)
+				exists = false;
+		}
+	}
+	else{
+		for(int i = 0; i < vertices; i++){
+			int j = degree(graph[i]);
+			int k = in_degree(graph[i]->data,graph,vertices);
+			if(j != k)
+				exists = false;
+		}
+	}
+	return exists;
+}
 int Edges(Node * Graph[],int verteces){
 	
 	int sum = sum_of_degrees(Graph,verteces);
@@ -182,6 +219,7 @@ bool connected(Node * Graph[], int ver, int start){
 				added[count2] = j;
 				count2++;
 				trav = Graph[j];
+				break;
 			}
 		}
 		if(trav == NULL && count < ver){
@@ -329,7 +367,6 @@ int main(int argc, char** argv) {
 		}
 	}
 	
-	
 	cout << "*****************************************" << endl;
 	//counting the edges of both the graphs
 	
@@ -352,22 +389,30 @@ int main(int argc, char** argv) {
 	
 	//checking if the graph is connected or not
 	bool conn = true;
-	for(int i = 0; i < vertices; i++){
+	if(! is_directed(start_Eg1,Graph1,vertices)){
+		if(! connected(Graph1,vertices,3)){
+			conn = false;
+			cout << "The Graphs are not connected!" << endl;
+		}
+			
+	}
+	else{
+		for(int i = 0; i < vertices; i++){
 		if(! connected(Graph1,vertices,i)){
 			cout << "The Graphs are not connected!" << endl;
 			conn = false;
 			break;
 		}	
+		}
+		if(conn)
+		for(int i = 0; i < vertices; i++){
+			if(! connected(Graph2,vertices,i)){
+				cout << "The Graphs are not connected!" << endl;
+				conn = false;
+				break;
+			}	
+		}
 	}
-	if(conn)
-	for(int i = 0; i < vertices; i++){
-		if(! connected(Graph2,vertices,i)){
-			cout << "The Graphs are not connected!" << endl;
-			conn = false;
-			break;
-		}	
-	}
-	
 	if(conn){
 		cout << "The Graphs are connected!" << endl;
 	}
@@ -379,6 +424,14 @@ int main(int argc, char** argv) {
 	}
 	else
 		cout << "The graphs dont have equal vertices with equal degrees!" << endl;
+		
+	//checking if the graphs contain an Euilar Circuit
+	if(Euilar_exists(start_Eg1,Graph1,vertices) && (start_Eg2,Graph2,vertices) )
+		cout << "An Euilar ciruit exists in both graphs!" << endl;
+	else
+		cout << "Euilar circuit does not exist in both graphs!" << endl;
+	
+	
 	
 	
 	return 0;
