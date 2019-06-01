@@ -150,8 +150,6 @@ int main(int argc, char** argv) {
 
   inFile.close();
 	int vertices = counter;
-	//cout << "How many vertices are there in your graph?" << endl;
-	//cin >> vertices;
 	Node * Graph1[vertices];
 
 
@@ -182,15 +180,6 @@ int main(int argc, char** argv) {
   }
   inFile.close();
 
-  /*
-
-	for(int i = 0; i < vertices; i++){
-		Graph1[i] = new Node;
-		cout << "Vertex " << i+1 << ": ";
-		cin >> Graph1[i]->data;
-	}
-  */
-
   //Open the vertices file
   inFile.open("C:\\Users\\mtalh\\source\\repos\\Data Structure Project\\Vertices G1.txt");
   //Getting the vertices connected to each of the vertices of Graph 1
@@ -201,16 +190,12 @@ int main(int argc, char** argv) {
 		Node * end_G1 = temp2;
 		end_G1->next = NULL;
 
-		//cout << "Vertex " << Graph1[i]->data << " is initial to how many terminal vertices?: ";
     //Get input from the file
     inFile >> x;
 
-		//cin >> to_how_many;
-		//cout << "Enter the name of those vertices: " << endl;
+		//Loop through the items to get the terminal vertices
 		for(int j = 2; j < x.size(); j+=2){
 			Node *temp = new Node;
-			//cout << "Vertex " << j+1 << ": ";
-			//cin >> temp->data;
       temp->data = x[j];
 			if(start_G1 == NULL){
 				start_G1 = temp;
@@ -287,16 +272,6 @@ int main(int argc, char** argv) {
   }
   inFile.close();
 
-  /*
-	cout << "Enter the names of the vertices of graph 2: " << endl;
-	for(int i = 0; i < vertices; i++){
-		Graph2[i] = new Node;
-		cout << "Vertex " << i+1 << ": ";
-		cin >> Graph2[i]->data;
-	}
-
-  */
-
   //Open the file
   inFile.open("C:\\Users\\mtalh\\source\\repos\\Data Structure Project\\Vertices G2.txt");
 
@@ -311,14 +286,8 @@ int main(int argc, char** argv) {
     //Get input
     inFile >> x;
 
-  	//cout << "Vertex " << Graph2[i]->data << " is connected to how many vertices?: ";
-  	//int to_how_many;
-  	//cin >> to_how_many;
-  	//cout << "Enter the name of those vertices: " << endl;
   	for(int j = 2; j < x.size(); j+=2){
   		Node *temp = new Node;
-  		//cout << "Vertex " << j+1 << ": ";
-  		//cin >> temp->data;
       temp->data = x[j];
 
   		if(start_G2 == NULL){
@@ -352,7 +321,6 @@ int main(int argc, char** argv) {
   }
   //Close the file
   inFile.close();
-
 
 	cout << "*****************************************" << endl;
 	//counting the edges of both the graphs
