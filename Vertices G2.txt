@@ -1,0 +1,5 @@
+p:s,t
+q:r,s
+r:q,t
+s:p,q
+t:p,r
