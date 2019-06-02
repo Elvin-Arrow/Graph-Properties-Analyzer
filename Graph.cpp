@@ -14,6 +14,88 @@ struct edges{
 	edges * next;
 };
 
+class Stack {
+  Node *topOfStackPointer;
+
+  public:
+  //Attributes
+
+  //Method declaration
+
+  Stack () {
+    topOfStackPointer = NULL;
+  }
+
+  void push(char item) {
+    //Declaration area
+    Node *newNodePointer;
+
+    //Working area
+    newNodePointer = new Node;
+    if (newNodePointer != NULL) {
+      //Populate the new node
+      newNodePointer->data = item;
+      newNodePointer->next = NULL;
+
+      //Adjust the new node
+      if (topOfStackPointer == NULL) {
+        topOfStackPointer = newNodePointer;
+      }
+      else {
+        newNodePointer->next = topOfStackPointer;
+        topOfStackPointer = newNodePointer;
+      }
+    }
+    else {
+      cout << "\nStack is full :)\n";
+    }
+  }
+
+  char pop() {
+    //Declaration area
+    Node *deleteNode;
+    char popItem;
+
+    //Working area
+    if (topOfStackPointer != NULL) {
+      popItem = topOfStackPointer->data;
+      deleteNode = topOfStackPointer;
+      topOfStackPointer = topOfStackPointer->next;
+      free(deleteNode);
+    }
+    return popItem;
+  }
+
+  char peek() {
+    if (topOfStackPointer != NULL)
+      return topOfStackPointer->data;
+    else
+      return ' ';
+  }
+
+  bool isStackEmpty() {
+    if (topOfStackPointer == NULL)
+      return true;
+    else
+      return false;
+  }
+
+  void displayStack() {
+    //Declaration area
+    Node *traverse;
+
+    //Working area
+    traverse = topOfStackPointer;
+    cout << "\nAddress\t\tItems\tNext Address\n";
+    while (traverse != NULL) {
+      cout << traverse << "\t" <<traverse->data << "\t" << traverse->next <<endl;
+      traverse = traverse->next; //Go to next node
+    }
+  }
+
+
+};
+
 //Fnction declaration
 void degreeCount(Node* graph1[], Node* graph2[] , int verticesG1, int verticesG2);
 
