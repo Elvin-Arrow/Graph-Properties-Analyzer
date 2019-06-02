@@ -347,7 +347,7 @@ int main(int argc, char** argv) {
 		edges2 = sum_of_degrees(Graph2,verticesG2);
 
 	if(edges1 == edges2)
-		cout << "Graph 1 and Graph 2 contain equal  " << edges1 << " edges!" << endl;
+		cout << "Graph 1 and Graph 2 contain equal " << edges1 << " edges!" << endl;
 	else
 		cout << "Graph 1 and Graph 2 dont contain equal edges!" << endl;
 
