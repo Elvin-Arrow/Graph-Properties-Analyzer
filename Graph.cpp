@@ -98,6 +98,12 @@ class Stack {
 
 //Fnction declaration
 void degreeCount(Node* graph1[], Node* graph2[] , int verticesG1, int verticesG2);
+void simpleDFS(Node* graph[], int vertices);
+void sDFS(bool* visited, int vertex, Node* graph[], int vertices);
+bool dfs(bool* visited, Node* vertex, char parent, Node* graph[], int vertices);
+int getNeighbouringVertexIndex(Node* vertex, Node* graph[], int vertices);
+int getVertexNumber(char vertex, Node* graph[], int vertices);
+bool simpleCircuit(Node* graph[], int vertices);
 
 //Function returns the degree count of the vertex
 int degree (Node * vertex) {
@@ -373,9 +379,8 @@ int main(int argc, char** argv) {
   	Node * end_G2 = temp1;
   	end_G2->next = NULL;
 
-    //Get input
+    //Get input from the file
     inFile >> x;
-
 
   	for(int j = 2; j < x.size(); j+=2){
   		Node *temp = new Node;
@@ -459,9 +464,12 @@ int main(int argc, char** argv) {
 	}
 
 	degreeCount(Graph1, Graph2, verticesG1, verticesG2);
-
+	cout << endl;
+	//cout << simpleCircuit(Graph1, verticesG1) << endl;
+	simpleDFS(Graph2, verticesG2);
 	return 0;
 }
+
 void degreeCount(Node* graph1[], Node* graph2[] , int verticesG1, int verticesG2) {
 	//Declaration area
 
@@ -475,5 +483,109 @@ void degreeCount(Node* graph1[], Node* graph2[] , int verticesG1, int verticesG2
 	for (int i = 0; i < verticesG2; i++) {
 		cout << "Degree of " << graph2[i]->data  << " is: "<< degree(graph2[i]) << endl;
 	}
-	//cout << graph1[0]->data << endl;
+
+}
+
+void simpleDFS(Node* graph[], int vertices) {
+	//Declaration area
+	bool* visited = new bool[vertices];
+
+	//Working area
+	for (int i = 0; i < vertices; i++) {
+		visited[i] = false;
+	}
+
+	for (int i = 0; i < vertices; i++) {
+		if (visited[i] == false) {
+			sDFS(visited, i, graph, vertices);
+		}
+	}
+}
+
+void sDFS(bool* visited, int vertex, Node* graph[], int vertices) {
+	//Declaration area
+	int d;
+	Node* temp = graph[vertex];
+
+	//Working area
+	visited[vertex] = true;
+	cout << graph[vertex]->data << endl;
+
+	d = degree(graph[vertex]);
+
+	for (int i = 0; i < d; i++) {
+		temp = graph[vertex];
+		for (int j = 0; j < i; j++) {
+			temp = temp->next;
+		}
+		vertex = getVertexNumber(temp->data, graph, vertices);
+		if (!visited[vertex])
+			sDFS(visited, vertex, graph, vertices);
+
+	}
+}
+
+bool dfs(bool* visited, Node* vertex, char parent, Node* graph[], int vertices) {
+	//Declaration area
+	int d, p, vn;
+
+	//Working area
+	//Mark the vertex as visited
+	visited[getVertexNumber(vertex->data, graph, vertices)];
+
+	d = degree(vertex);
+	for (int i = 0; i < d; i++) {
+		//Set parent for the next recursion
+		p = graph[getVertexNumber(vertex->data, graph, vertices)]->data;
+		//Goto the next vertex
+		vertex = vertex->next;
+		//Get vertex number and check visit status
+		vn = getVertexNumber(vertex->data, graph, vertices);
+		if (!visited[vn]){
+			if (dfs(visited, vertex, p, graph, vertices))
+				return true;
+			else if (vertex->data != p) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+int getNeighbouringVertexIndex(Node* vertex, Node* graph[], int vertices) {
+
+	for (int i = 0; i < vertices; i++) {
+		if (graph[i]->data == vertex->data) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int getVertexNumber(char vertex, Node* graph[], int vertices) {
+	for (int i = 0; i < vertices; i++) {
+		if (vertex == graph[i]->data) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+bool simpleCircuit(Node* graph[], int vertices) {
+	//Declaration area
+	bool* visited = new bool[vertices];
+
+	//Working area
+	for (int i = 0; i < vertices; i++) {
+		visited[i] = false;
+	}
+
+	for (int i = 0; i < vertices; i++) {
+		if (!visited[i]) {
+			if (dfs(visited, graph[i]->next, ' ', graph, vertices)) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
