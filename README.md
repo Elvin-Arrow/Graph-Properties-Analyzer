@@ -7,4 +7,4 @@ Following is the breakdown of all that which I am supposed to do in the project
 - [x] has a vertex of degree k
 - [ ] has a circuit of length k
 - [ ] has m simple circuits of length k
-- [ ] `optional` has an euler circuit
+- [x] `optional` has an euler circuit
