@@ -872,91 +872,8 @@ int iDFS (Node* graph[], int vertex, int vertices) {
   return cycle;
 }
 */
-void displayArray(bool* arr, int size) {
-  for (int i = 0; i < size; i++) {
-    cout << arr[i] << " ";
-  }
-  cout << endl;
-}
 
-void simpleDFS(Node* graph[], int vertices) {
-	//Declaration area
-	bool* visited = new bool[vertices];
 
-	//Working area
-	for (int i = 0; i < vertices; i++) {
-		visited[i] = false;
-	}
-
-	for (int i = 0; i < vertices; i++) {
-		if (visited[i] == false) {
-			sDFS(visited, i, graph, vertices);
-		}
-	}
-}
-
-void sDFS(bool* visited, int vertex, Node* graph[], int vertices) {
-	//Declaration area
-	int d;
-	Node* temp = graph[vertex];
-
-	//Working area
-	visited[vertex] = true;
-	//cout << graph[vertex]->data << endl;
-	cout << "Vertex: " << vertex << endl;
-	d = degree(graph[vertex]);
-	cout << "Degree: " << d << endl;
-
-	for (int i = 1; i < d; i++) {
-		temp = graph[vertex];
-		for (int j = 0; j < i; j++) {
-			cout << "Before: " << temp->data << endl;
-			temp = temp->next;
-			cout << "After: " << temp->data << endl;
-		}
-		vertex = getVertexNumber(temp->data, graph, vertices);
-		if (!visited[vertex])
-			sDFS(visited, vertex, graph, vertices);
-
-	}
-}
-
-bool dfs(bool* visited, Node* vertex, char parent, Node* graph[], int vertices) {
-	//Declaration area
-	int d, p, vn;
-
-	//Working area
-	//Mark the vertex as visited
-	visited[getVertexNumber(vertex->data, graph, vertices)];
-
-	d = degree(vertex);
-	for (int i = 0; i < d; i++) {
-		//Set parent for the next recursion
-		p = graph[getVertexNumber(vertex->data, graph, vertices)]->data;
-		//Goto the next vertex
-		vertex = vertex->next;
-		//Get vertex number and check visit status
-		vn = getVertexNumber(vertex->data, graph, vertices);
-		if (!visited[vn]){
-			if (dfs(visited, vertex, p, graph, vertices))
-				return true;
-			else if (vertex->data != p) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-int getNeighbouringVertexIndex(Node* vertex, Node* graph[], int vertices) {
-
-	for (int i = 0; i < vertices; i++) {
-		if (graph[i]->data == vertex->data) {
-			return i;
-		}
-	}
-	return -1;
-}
 
 int getVertexNumber(char vertex, Node* graph[], int vertices) {
 	for (int i = 0; i < vertices; i++) {
@@ -967,21 +884,3 @@ int getVertexNumber(char vertex, Node* graph[], int vertices) {
 	return -1;
 }
 
-bool simpleCircuit(Node* graph[], int vertices) {
-	//Declaration area
-	bool* visited = new bool[vertices];
-
-	//Working area
-	for (int i = 0; i < vertices; i++) {
-		visited[i] = false;
-	}
-
-	for (int i = 0; i < vertices; i++) {
-		if (!visited[i]) {
-			if (dfs(visited, graph[i]->next, ' ', graph, vertices)) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
