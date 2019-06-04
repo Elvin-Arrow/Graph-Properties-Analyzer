@@ -16,6 +16,7 @@ struct edges{
 
 class Stack {
   Node *topOfStackPointer;
+	Node* bottomOfStackPointer;
 
   public:
   //Attributes
@@ -40,6 +41,7 @@ class Stack {
       //Adjust the new node
       if (topOfStackPointer == NULL) {
         topOfStackPointer = newNodePointer;
+				bottomOfStackPointer = newNodePointer;
       }
       else {
         newNodePointer->next = topOfStackPointer;
@@ -73,7 +75,7 @@ class Stack {
       return ' ';
   }
 
-  bool isStackEmpty() {
+  bool isEmpty() {
     if (topOfStackPointer == NULL)
       return true;
     else
@@ -93,11 +95,27 @@ class Stack {
     }
   }
 
+	void itemCount() {
+		//Declaration area
+		int count;
+		Node* traverse;
 
+		//Working area
+		count = 0;
+		traverse = bottomOfStackPointer;
+		while (traverse != NULL) {
+			count++;
+			traverse = traverse->next;
+		}
+	}
 };
 
 //Fnction declaration
 void degreeCount(Node* graph1[], Node* graph2[] , int verticesG1, int verticesG2);
+bool lookUp(int value, Node* startOfListPointer);
+int listItemCount (Node* startOfListPointer);
+int iDFS (Node* graph[], int vertex, int vertices);
+void displayArray(bool* arr, int size);
 void simpleDFS(Node* graph[], int vertices);
 void sDFS(bool* visited, int vertex, Node* graph[], int vertices);
 bool dfs(bool* visited, Node* vertex, char parent, Node* graph[], int vertices);
@@ -466,24 +484,398 @@ int main(int argc, char** argv) {
 	degreeCount(Graph1, Graph2, verticesG1, verticesG2);
 	cout << endl;
 	//cout << simpleCircuit(Graph1, verticesG1) << endl;
-	simpleDFS(Graph2, verticesG2);
+	//simpleDFS(Graph2, verticesG2);
+	/*
+	for (int i = 0; i < verticesG2; i++) {
+		Node* traverse = Graph2[i];
+		cout << "Vertex: " << i+1 << endl;
+
+		while (traverse != NULL) {
+			cout << "Value: " << traverse->data << endl;
+			traverse = traverse->next;
+		}
+	}
+	*/
+  int g1, g2;
+  g1 = iDFS(Graph1, 0, verticesG1);
+	g2 = iDFS(Graph2, 0, verticesG2);
+  /*
+  g2 = iDFS(Graph2, 0, verticesG2);4
+	if (g1 == g2) {
+    cout << "\nSimple Circuit in both the graphs" << endl;
+  }
+  else {
+    cout << "\nBoth graphs do no contain circuits of lenght k\n";
+  }
+
+	//iDFS(Graph2, 0, verticesG2, visited);
+	//cout << endl;
+	//iDFS(Graph2, 2, verticesG2, visited);
+  */
 	return 0;
 }
 
 void degreeCount(Node* graph1[], Node* graph2[] , int verticesG1, int verticesG2) {
 	//Declaration area
+  bool degreeStatus;
+	Node* startG1 = NULL;
+	Node* startG2 = NULL;
+	Node* endG1 = NULL;
+	Node* endG2 = NULL;
 
 	//Working area
-	cout << "\nGraph 1\n";
 	for (int i = 0; i < verticesG1; i++) {
-		cout << "Degree of " << graph1[i]->data  << " is: "<< degree(graph1[i]) << endl;
+		bool exists = false;
+		int d = degree(graph1[i]);
+		Node* traverse = startG1;
+
+		while (traverse != NULL) {
+			if ((int)traverse->data == d) {
+				exists = true;
+				break;
+			}
+			traverse = traverse->next;
+		}
+
+		if (!exists) {
+			Node* node = new Node;
+			node->data = d;
+			node->next = NULL;
+
+			if (startG1 == NULL) {
+				startG1 = node;
+				endG1 = node;
+			}
+			else {
+				endG1->next = node;
+				endG1 = node;
+			}
+		}
+
 	}
 
-	cout << "\nGraph 2\n";
 	for (int i = 0; i < verticesG2; i++) {
-		cout << "Degree of " << graph2[i]->data  << " is: "<< degree(graph2[i]) << endl;
+		bool exists = false;
+		int d = degree(graph2[i]);
+		Node* traverse = startG2;
+
+		while (traverse != NULL) {
+			if (traverse->data == d) {
+				exists = true;
+				break;
+			}
+			traverse = traverse->next;
+		}
+
+		if (!exists) {
+			Node* node = new Node;
+			node->data = d;
+			node->next = NULL;
+
+			if (startG2 == NULL) {
+				startG2 = node;
+				endG2 = node;
+			}
+			else {
+				endG2->next = node;
+				endG2 = node;
+			}
+		}
+
 	}
 
+	if (listItemCount(startG1) == listItemCount(startG2)) {
+		Node* traverse = startG1;
+		int d;
+		while (traverse != NULL) {
+			d = (int)traverse -> data;
+			if (lookUp(d, startG2)) {
+				cout << "\nBoth graphs have a vertex of degree " << d << endl;
+			}
+			else {
+				cout << "\nOne graphs has a vertex of degree " << d;
+				cout << " the other does not\n";
+			}
+			traverse = traverse->next;
+		}
+	}
+	else if (listItemCount(startG1) > listItemCount(startG2)) {
+		Node* traverse = startG1;
+		int d;
+		while (traverse != NULL) {
+			d = (int)traverse -> data;
+			if (lookUp(d, startG2)) {
+				cout << "\nBoth graphs have a vertex of degree " << d << endl;
+			}
+			else {
+				cout << "\nOne graphs has a vertex of degree " << d;
+				cout << " the other does not\n";
+			}
+			traverse = traverse->next;
+		}
+
+		traverse = startG2;
+		while (traverse != NULL) {
+			d = (int)traverse -> data;
+			if (lookUp(d, startG1)) {
+				cout << "\nBoth graphs have a vertex of degree " << d << endl;
+			}
+			else {
+				cout << "\nOne graphs has a vertex of degree " << d;
+				cout << " the other does not\n";
+			}
+			traverse = traverse->next;
+		}
+	}
+	else {
+		Node* traverse = startG2;
+		int d;
+		while (traverse != NULL) {
+			d = (int)traverse -> data;
+			if (lookUp(d, startG1)) {
+				cout << "\nBoth graphs have a vertex of degree " << d << endl;
+			}
+			else {
+				cout << "\nOne graphs has a vertex of degree " << d;
+				cout << " the other does not\n";
+			}
+			traverse = traverse->next;
+		}
+		traverse = startG1;
+		while (traverse != NULL) {
+			d = (int)traverse -> data;
+			if (lookUp(d, startG2)) {
+				cout << "\nBoth graphs have a vertex of degree " << d << endl;
+			}
+			else {
+				cout << "\nOne graphs has a vertex of degree " << d;
+				cout << " the other does not\n";
+			}
+			traverse = traverse->next;
+		}
+	}
+
+}
+
+bool lookUp(int value, Node* startOfListPointer) {
+	//Declaration area
+	Node* traverse;
+
+	//Working area
+	traverse = startOfListPointer;
+	while (traverse != NULL) {
+		if ((int)traverse->data == value) {
+			return true;
+		}
+		traverse = traverse->next;
+	}
+	return false;
+}
+
+int listItemCount (Node* startOfListPointer) {
+	//Declaration area
+	int itemCount;
+	Node* traverse;
+
+	//Working area
+	itemCount = 0;
+	traverse = startOfListPointer;
+	while (traverse != NULL) {
+		itemCount++;
+		traverse = traverse->next;
+	}
+	return itemCount;
+}
+
+//Version 1
+int iDFS (Node* graph[], int vertex, int vertices) {
+	//Declaration area
+	Stack itemStack;
+	Node* cyclePathStart = NULL;
+	Node* cyclePathEnd = NULL;
+	char ver, previous;
+	int dg, cycle;
+	Node* n;
+  bool* visited = new bool[vertices];
+  bool* inStack = new bool[vertices];
+	bool change;
+
+	//Working area
+	change = true;
+  for (int i = 0; i < vertices; i++) {
+    visited[i] = false;
+    inStack[i] = false;
+  }
+
+  cycle = 0;
+  previous = ' ';
+  ver = ' ';
+	itemStack.push(graph[vertex]->data);
+	visited[vertex] = true;
+  inStack[vertex] = true;
+
+	while (!itemStack.isEmpty()) {
+		if (change)
+    	previous = ver;
+		change = false;
+		ver = itemStack.pop(); //Get the vertex
+		cout << ver << endl;
+		vertex = getVertexNumber(ver, graph, vertices);
+    visited[vertex] = true;
+
+		Node* node = new Node;
+		node->data = ver;
+		node->next = NULL;
+
+		if (cyclePathStart == NULL) {
+			cyclePathStart = node;
+			cyclePathEnd = node;
+		}
+		else {
+			cyclePathEnd->next = node;
+			cyclePathEnd = node;
+		}
+
+		n = graph[vertex]->next;
+		dg = degree(graph[vertex]);
+		char neighbour[dg];
+
+    //Populate the neighbour array
+		for (int i = 0; i < dg; i++) {
+			neighbour[i] = n->data;
+			n = n->next;
+		}
+
+		for (char ng : neighbour) {
+      if (!inStack[getVertexNumber(ng, graph, vertices)]) {
+        itemStack.push(ng);
+        inStack[getVertexNumber(ng, graph, vertices)] = true;
+				change = true;
+      }
+      else if (previous != ng && visited[getVertexNumber(ng, graph, vertices)]) {
+        //Cycle found
+        cycle++;
+				change = true;
+
+				node = new Node;
+				node->data = ng;
+				node->next = NULL;
+
+				cyclePathEnd->next = node;
+				cyclePathEnd = node;
+
+				node = new Node;
+				node->data = '|';
+				node->next = NULL;
+
+				cyclePathEnd->next = node;
+				cyclePathEnd = node;
+
+				node = new Node;
+				node->data = ver;
+				node->next = NULL;
+
+				cyclePathEnd->next = node;
+				cyclePathEnd = node;
+
+      }
+			else if (!change) {
+				node = new Node;
+				node->data = previous;
+				node->next = NULL;
+
+				cyclePathEnd->next = node;
+				cyclePathEnd = node;
+			}
+		}
+
+	}
+  cout << "\nCycles: " << cycle << endl;
+
+	//Print the path
+	Node* traverse = cyclePathStart;
+	while (traverse != NULL) {
+		if (traverse->data != '|') {
+			cout << traverse->data << " ";
+		}
+		else {
+				cout << endl;
+		}
+
+		traverse = traverse->next;
+	}
+
+  return cycle;
+}
+
+//Version 2
+/*
+int iDFS (Node* graph[], int vertex, int vertices) {
+	//Declaration area
+	Stack itemStack;
+	char ver, previous;
+	int dg, cycle;
+	Node* n;
+  bool* visited = new bool[vertices];
+  bool* inStack = new bool[vertices];
+
+	//Working area
+  for (int i = 0; i < vertices; i++) {
+    visited[i] = false;
+    inStack[i] = false;
+  }
+
+  cycle = 0;
+  previous = ' ';
+  ver = ' ';
+	itemStack.push(graph[vertex]->data);
+	visited[vertex] = true;
+  inStack[vertex] = true;
+
+	while (!itemStack.isEmpty()) {
+    previous = ver;
+    cout << "\nPrevious: " << previous << endl;
+		ver = itemStack.pop(); //Get the vertex
+		cout << "\nCurrent: " << ver << endl;
+    cout << "====================\n";
+		vertex = getVertexNumber(ver, graph, vertices);
+    visited[vertex] = true;
+    displayArray(visited, vertices);
+    cout << "====================\n";
+		n = graph[vertex]->next;
+		dg = degree(graph[vertex]);
+		char neighbour[dg];
+
+    //Populate the neighbour array
+		for (int i = 0; i < dg; i++) {
+			neighbour[i] = n->data;
+			n = n->next;
+		}
+
+		for (char ng : neighbour) {
+      if (!inStack[getVertexNumber(ng, graph, vertices)]) {
+        itemStack.push(ng);
+        inStack[getVertexNumber(ng, graph, vertices)] = true;
+      }
+      else if (previous != ng) {
+        //Cycle found
+        cycle++;
+      }
+		}
+    displayArray(inStack, vertices);
+    cout << "====================\n";
+    cout << "\nCycles: " << cycle << endl;
+    cout << "====================\n";
+	}
+  cout << "\nCycles: " << cycle << endl;
+  return cycle;
+}
+*/
+void displayArray(bool* arr, int size) {
+  for (int i = 0; i < size; i++) {
+    cout << arr[i] << " ";
+  }
+  cout << endl;
 }
 
 void simpleDFS(Node* graph[], int vertices) {
@@ -509,14 +901,17 @@ void sDFS(bool* visited, int vertex, Node* graph[], int vertices) {
 
 	//Working area
 	visited[vertex] = true;
-	cout << graph[vertex]->data << endl;
-
+	//cout << graph[vertex]->data << endl;
+	cout << "Vertex: " << vertex << endl;
 	d = degree(graph[vertex]);
+	cout << "Degree: " << d << endl;
 
-	for (int i = 0; i < d; i++) {
+	for (int i = 1; i < d; i++) {
 		temp = graph[vertex];
 		for (int j = 0; j < i; j++) {
+			cout << "Before: " << temp->data << endl;
 			temp = temp->next;
+			cout << "After: " << temp->data << endl;
 		}
 		vertex = getVertexNumber(temp->data, graph, vertices);
 		if (!visited[vertex])
