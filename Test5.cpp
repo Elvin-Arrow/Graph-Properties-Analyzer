@@ -723,7 +723,7 @@ int iDFS (Node* graph[], int vertex, int vertices) {
 		cout << ver << endl;
 		vertex = getVertexNumber(ver, graph, vertices);
     visited[vertex] = true;
-
+	/*
 		Node* node = new Node;
 		node->data = ver;
 		node->next = NULL;
@@ -736,7 +736,7 @@ int iDFS (Node* graph[], int vertex, int vertices) {
 			cyclePathEnd->next = node;
 			cyclePathEnd = node;
 		}
-
+*/
 		n = graph[vertex]->next;
 		dg = degree(graph[vertex]);
 		char neighbour[dg];
@@ -757,7 +757,7 @@ int iDFS (Node* graph[], int vertex, int vertices) {
         //Cycle found
         cycle++;
 				change = true;
-
+				/*
 				node = new Node;
 				node->data = ng;
 				node->next = NULL;
@@ -778,8 +778,9 @@ int iDFS (Node* graph[], int vertex, int vertices) {
 
 				cyclePathEnd->next = node;
 				cyclePathEnd = node;
-
+				*/
       }
+			/*
 			else if (!change) {
 				node = new Node;
 				node->data = previous;
@@ -788,6 +789,7 @@ int iDFS (Node* graph[], int vertex, int vertices) {
 				cyclePathEnd->next = node;
 				cyclePathEnd = node;
 			}
+			*/
 		}
 
 	}
