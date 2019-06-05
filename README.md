@@ -1,2 +1,10 @@
 # Data-Structures-Final-Project
-Final project for data structures 
+Final project for data structures
+Following is the breakdown of all that which I am supposed to do in the project
+## The graph
+- [x] has n vertices
+- [x] filing to store the graph
+- [x] has a vertex of degree k
+- [ ] has a circuit of length k
+- [ ] has m simple circuits of length k
+- [x] `optional` has an euler circuit
