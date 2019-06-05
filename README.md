@@ -7,10 +7,9 @@ Following is the breakdown of all that which I am supposed to do in the project
 - [x] filing to store the graph
 - [x] has a vertex of degree k
 - [x] has m vertices of degree k
-- [ ] has a circuit of length k
+- [x] has a circuit ~~of length k~~
 - [ ] has a simple circuit of length k
 - [ ] has m simple circuits of length k
-- [x] has m circuits
 - [x] is connected
 - [x] has an euler circuit
 - [ ] `optional` has a Hamiltonian circuit
