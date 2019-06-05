@@ -1,5 +1,6 @@
-p:s,t
-q:r,s
-r:q,t
-s:p,q
-t:p,r
+a:b,d,f
+b:a,c,e
+c:b,d
+d:c,a,e
+e:d,b,f
+f:e,a
