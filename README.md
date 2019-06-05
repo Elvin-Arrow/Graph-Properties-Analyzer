@@ -11,5 +11,5 @@ Following is the breakdown of all that which I am supposed to do in the project
 - [ ] has a simple circuit of length k
 - [ ] has m simple circuits of length k
 - [x] is connected
-- [x] `optional` has an euler circuit
+- [x] has an euler circuit
 - [ ] `optional` has a Hamiltonian circuit
