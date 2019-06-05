@@ -15,6 +15,12 @@ struct edges{
 	edges * next;
 };
 
+struct degree_count{
+	int degree;
+	int count;
+	degree_count* next;
+};
+
 class Stack {
   Node *topOfStackPointer;
 	Node* bottomOfStackPointer;
@@ -118,6 +124,8 @@ bool lookUp(int value, Node* startOfListPointer);
 int listItemCount (Node* startOfListPointer);
 int iDFS (Node* graph[], int vertex, int vertices);
 int getVertexNumber(char vertex, Node* graph[], int vertices);
+bool euilarExists(edges* edge, Node** graph, int vertices);
+int inDegree(char a,Node * graph[],int vertices);
 
 
 //Function returns the degree count of the vertex
@@ -238,6 +246,89 @@ bool connected(Node * Graph[], int ver, int start) {
 	}
 
 return result;
+}
+
+degree_count * countOfAllDegrees(Node * graph[], int ver){
+	int deg;
+
+	degree_count * dc1_start = NULL;
+	degree_count * dc1_end = NULL;
+
+	for(int i = 0; i < ver; i++){
+		deg = degree(graph[i]);
+		degree_count * trav = dc1_start;
+		bool exists = false;
+		while(trav != NULL){
+			if(trav->degree == deg){
+				trav->count++;
+				exists = true;
+				break;
+			}
+			trav = trav->next;
+		}
+		if(! exists){
+			degree_count * temp = new degree_count;
+			temp->degree = deg;
+			temp->count = 1;
+
+			if(dc1_start == NULL){
+				dc1_start = temp;
+				dc1_end = temp;
+				dc1_end->next = NULL;
+			}
+			else{
+				dc1_end->next = temp;
+				dc1_end = temp;
+				dc1_end->next = NULL;
+			}
+		}
+
+	}
+
+	return dc1_start;
+}
+
+int length(degree_count * t){
+	int l = 0;
+	degree_count * trav = t;
+	while(trav != NULL){
+		l++;
+		trav = trav->next;
+	}
+	return l;
+}
+
+bool equalCountOfEqualDegrees(degree_count * dc1, degree_count * dc2){
+	int len_dc1 = length(dc1);
+	int len_dc2 = length(dc2);
+	bool result;
+	if(len_dc1 == len_dc2){
+		degree_count * trav1 = dc1;
+		while(trav1 != NULL){
+			int degri = trav1->degree;
+			int cnt = trav1->count;
+
+			degree_count * trav2 = dc2;
+			bool found = false;
+			while(dc2 != NULL){
+				if(trav2->degree == degri && trav2->count == cnt){
+					found = true;
+					break;
+				}
+				trav2 = trav2->next;
+			}
+			if(found)
+				trav1 = trav1->next;
+			else
+				break;
+		}
+
+		if(trav1 == NULL)
+			result = true;
+		else
+			result = false;
+	}
+	return result;
 }
 
 int main(int argc, char** argv) {
@@ -490,6 +581,18 @@ int main(int argc, char** argv) {
 	printDots();
 	degreeCount(Graph1, Graph2, verticesG1, verticesG2);
 
+	// Checking if graphs have m vertices with degree k
+	Sleep(500);
+	cout << "\nChecking if graphs have m vertices with degree k";
+	printDots();
+	degree_count * dc1 = countOfAllDegrees(Graph1,verticesG1);
+	degree_count * dc2 = countOfAllDegrees(Graph2,verticesG2);
+	if(equalCountOfEqualDegrees(dc1,dc2)){
+		cout << "The graphs contain equal vertices with equal degrees!" << endl;
+	}
+	else
+		cout << "The graphs dont have equal vertices with equal degrees!" << endl;
+
 	//Check for cycles in the graphs
 	Sleep(500);
 	cout << "\nAnalysing graphs for cycles";
@@ -507,6 +610,15 @@ int main(int argc, char** argv) {
     cout << "Graph 1 has " << g1 << " cycles\n";
 		cout << "Graph 2 has " << g2 << " cycles\n";
   }
+
+	//checking if the graphs contain an Euilar Circuit
+	Sleep(500);
+	cout << "\nAnalyzing graphs for Euler circuit";
+	printDots();
+	if(euilarExists(start_Eg1,Graph1,verticesG1) && (start_Eg2,Graph2,verticesG2) )
+		cout << "An Euilar ciruit exists in both graphs!" << endl;
+	else
+		cout << "Euilar circuit do not exist in both graphs!" << endl;
 
 	return 0;
 }
@@ -760,4 +872,46 @@ int getVertexNumber(char vertex, Node* graph[], int vertices) {
 		}
 	}
 	return -1;
+}
+
+
+bool euilarExists(edges* edge, Node** graph, int vertices) {
+
+	if(! is_directed(edge, graph, vertices)){
+		for(int i = 0; i < vertices; i++){
+			int j = degree(graph[i]);
+			if(j%2 != 0)
+				return false;
+		}
+	}
+	else{
+		for(int i = 0; i < vertices; i++){
+			int j = degree(graph[i]);
+			int k = inDegree(graph[i]->data, graph, vertices);
+			if(j != k)
+				return false;
+		}
+	}
+	return true;
+}
+
+
+int inDegree(char a,Node * graph[],int vertices) {
+	//Declaration area
+	int degree;
+
+	//Working area
+	degree = 0;
+	for(int i = 0; i < vertices; i++){
+		Node * traverse = graph[i];
+		if(traverse != NULL)
+		while(traverse->next != NULL){
+
+			if(traverse->next->data == a)
+				degree++;
+			traverse = traverse->next;
+		}
+
+	}
+	return degree;
 }
