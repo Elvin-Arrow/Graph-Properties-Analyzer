@@ -253,7 +253,7 @@ degree_count * countOfAllDegrees(Node * graph[], int ver){
 
 	degree_count * dc1_start = NULL;
 	degree_count * dc1_end = NULL;
-	
+
 	for(int i = 0; i < ver; i++){
 		deg = degree(graph[i]);
 		degree_count * trav = dc1_start;
@@ -266,7 +266,6 @@ degree_count * countOfAllDegrees(Node * graph[], int ver){
 			}
 			trav = trav->next;
 		}
-		
 		if(! exists){
 			degree_count * temp = new degree_count;
 			temp->degree = deg;
@@ -283,16 +282,9 @@ degree_count * countOfAllDegrees(Node * graph[], int ver){
 				dc1_end->next = NULL;
 			}
 		}
-		
+
 	}
-/*	if(ver == 7 ){
-			degree_count * tr = dc1_start;
-			while(tr != NULL){
-				cout << tr->degree << " " << tr->count << endl;
-				tr = tr->next;
-			}
-		}
-		*/
+
 	return dc1_start;
 }
 
@@ -307,11 +299,9 @@ int length(degree_count * t){
 }
 
 bool equalCountOfEqualDegrees(degree_count * dc1, degree_count * dc2){
-	
 	int len_dc1 = length(dc1);
 	int len_dc2 = length(dc2);
-	//cout << len_dc1 << " " << len_dc2 << endl;
-	bool result = false;
+	bool result;
 	if(len_dc1 == len_dc2){
 		degree_count * trav1 = dc1;
 		while(trav1 != NULL){
@@ -320,7 +310,7 @@ bool equalCountOfEqualDegrees(degree_count * dc1, degree_count * dc2){
 
 			degree_count * trav2 = dc2;
 			bool found = false;
-			while(trav2 != NULL){
+			while(dc2 != NULL){
 				if(trav2->degree == degri && trav2->count == cnt){
 					found = true;
 					break;
@@ -351,7 +341,7 @@ int main(int argc, char** argv) {
 	//Working area
   counter = 0;
   //Open the file
-	inFile.open("C:\\Users\\Malik Saqib Iftikhar\\Desktop\\github\\Data-Structures-Final-Project\\Vertices G1.txt");
+	inFile.open("C:\\Users\\mtalh\\source\\repos\\Data Structure Project\\Vertices G1.txt");
 	if (inFile) { //If file opens
     //Loop through the contents
 		while (inFile >> x) {
@@ -379,7 +369,7 @@ int main(int argc, char** argv) {
 
 	//naming the vertices of Graph 1
   //Opening the file
-  inFile.open("C:\\Users\\Malik Saqib Iftikhar\\Desktop\\github\\Data-Structures-Final-Project\\Vertices G1.txt");
+  inFile.open("C:\\Users\\mtalh\\source\\repos\\Data Structure Project\\Vertices G1.txt");
   if (inFile) {
     //Loop through the file contents
     for(int i = 0; i < verticesG1; i++){
@@ -396,7 +386,7 @@ int main(int argc, char** argv) {
   inFile.close();
 
   //Open the vertices file
-  inFile.open("C:\\Users\\Malik Saqib Iftikhar\\Desktop\\github\\Data-Structures-Final-Project\\Vertices G1.txt");
+  inFile.open("C:\\Users\\mtalh\\source\\repos\\Data Structure Project\\Vertices G1.txt");
 
 	//Getting the vertices connected to each of the vertices of Graph 1
 	for(int i = 0; i < verticesG1; i++) {
@@ -447,7 +437,7 @@ int main(int argc, char** argv) {
 
 	//naming the vertices of graph 2
   //Open the file
-  inFile.open("C:\\Users\\Malik Saqib Iftikhar\\Desktop\\github\\Data-Structures-Final-Project\\Vertices G2.txt");
+  inFile.open("C:\\Users\\mtalh\\source\\repos\\Data Structure Project\\Vertices G2.txt");
 
   //Get the vertex count
   counter = 0;
@@ -469,7 +459,7 @@ int main(int argc, char** argv) {
   Node * Graph2[verticesG2];
 
   //Open the file
-  inFile.open("C:\\Users\\Malik Saqib Iftikhar\\Desktop\\github\\Data-Structures-Final-Project\\Vertices G2.txt");
+  inFile.open("C:\\Users\\mtalh\\source\\repos\\Data Structure Project\\Vertices G2.txt");
 
   if (inFile) {
     //Loop through the contents and store root vertices
@@ -486,7 +476,7 @@ int main(int argc, char** argv) {
   inFile.close();
 
   //Open the file
-  inFile.open("C:\\Users\\Malik Saqib Iftikhar\\Desktop\\github\\Data-Structures-Final-Project\\Vertices G2.txt");
+  inFile.open("C:\\Users\\mtalh\\source\\repos\\Data Structure Project\\Vertices G2.txt");
 
 	//Getting the vertices connected to each of the vertices of Graph 2
 	for(int i = 0; i < verticesG2; i++){
@@ -535,20 +525,8 @@ int main(int argc, char** argv) {
   inFile.close();
 
 	cout << "*****************************************" << endl;
-	//Check whether the graph is directed or undirected
-	cout << "Checking whether the graphs are directed or undirected!\n" << endl;
-	Sleep(1000);
-	if(is_directed(start_Eg1,Graph1,verticesG1))
-		cout << "First Graph is directed!\n" << endl;
-	else
-		cout << "First Graph is undirected!\n" << endl;
-	
-	if(is_directed(start_Eg2,Graph2,verticesG2))
-		cout << "Second Graph is directed!\n" << endl;
-	else
-		cout << "Second Graph is undirected!\n" << endl;
 	//Check for graph edges
-	cout << "Checking graph's edges";
+	cout << "Checking graphs edges";
 	printDots();
 	//counting the edges of both the graphs
 	int edges1;
@@ -573,13 +551,13 @@ int main(int argc, char** argv) {
 	//}
 
 	//Check whether graphs are connected
-	Sleep(1000);
+	Sleep(500);
 	cout << "\nChecking for whether graphs are connected";
 	printDots();
 	bool conn = true; //Boolean variable holding connected status
 	for(int i = 0; i < verticesG1; i++){
 		if(! connected(Graph1,verticesG1,i)){
-			cout << "One or both the Graphs are not connected!" << endl;
+			cout << "The Graphs are not connected!" << endl;
 			conn = false;
 			break;
 		}
@@ -587,36 +565,37 @@ int main(int argc, char** argv) {
 	if(conn)
 	for(int i = 0; i < verticesG2; i++){
 		if(! connected(Graph2, verticesG2, i)){
-			cout << "One or both the Graphs are not connected!" << endl;
+			cout << "The Graphs are not connected!" << endl;
 			conn = false;
 			break;
 		}
 	}
 
 	if(conn){
-		cout << "Both the Graphs are connected!" << endl;
+		cout << "The Graphs are connected!" << endl;
 	}
 
 	//Check whether both graphs have a vertex of degree k
-	Sleep(1000);
+	Sleep(500);
 	cout << "\nChecking whether both graphs have a vertex of degree k";
 	printDots();
 	degreeCount(Graph1, Graph2, verticesG1, verticesG2);
 
 	// Checking if graphs have m vertices with degree k
+
 	Sleep(500);
 	cout << "\nChecking if graphs have m vertices with degree k";
 	printDots();
 	degree_count * dc1 = countOfAllDegrees(Graph1,verticesG1);
 	degree_count * dc2 = countOfAllDegrees(Graph2,verticesG2);
 	if(equalCountOfEqualDegrees(dc1,dc2)){
-		cout << "The graphs do contain m vertices with degree k!" << endl;
+		cout << "The graphs contain equal vertices with equal degrees!" << endl;
 	}
 	else
-		cout << "The graphs dont contain m vertices with degree k!" << endl;
+		cout << "The graphs dont have equal vertices with equal degrees!" << endl;
 
 	//Check for cycles in the graphs
-	Sleep(1000);
+	Sleep(500);
 	cout << "\nAnalysing graphs for cycles";
 	printDots();
   int g1, g2;
@@ -634,7 +613,7 @@ int main(int argc, char** argv) {
   }
 
 	//checking if the graphs contain an Euilar Circuit
-	Sleep(1000);
+	Sleep(500);
 	cout << "\nAnalyzing graphs for Euler circuit";
 	printDots();
 	if(euilarExists(start_Eg1,Graph1,verticesG1) && (start_Eg2,Graph2,verticesG2) )
@@ -648,7 +627,7 @@ int main(int argc, char** argv) {
 void printDots() {
 	for (int i = 0; i < 3; i++) {
 		cout << " . ";
-		Sleep(1000);
+		Sleep(750);
 	}
 	cout << endl;
 }
@@ -869,7 +848,7 @@ int iDFS (Node* graph[], int vertex, int vertices) {
 			n = n->next;
 		}
 
-	/*	for (char ng : neighbour) {
+		for (char ng : neighbour) {
       if (!inStack[getVertexNumber(ng, graph, vertices)]) {
         itemStack.push(ng);
         inStack[getVertexNumber(ng, graph, vertices)] = true;
@@ -881,7 +860,7 @@ int iDFS (Node* graph[], int vertex, int vertices) {
 				change = true;
       }
 		}
-*/
+
 	}
 
   return cycle;
