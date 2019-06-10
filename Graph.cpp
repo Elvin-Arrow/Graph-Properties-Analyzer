@@ -253,7 +253,7 @@ degree_count * countOfAllDegrees(Node * graph[], int ver){
 
 	degree_count * dc1_start = NULL;
 	degree_count * dc1_end = NULL;
-
+	
 	for(int i = 0; i < ver; i++){
 		deg = degree(graph[i]);
 		degree_count * trav = dc1_start;
@@ -266,6 +266,7 @@ degree_count * countOfAllDegrees(Node * graph[], int ver){
 			}
 			trav = trav->next;
 		}
+		
 		if(! exists){
 			degree_count * temp = new degree_count;
 			temp->degree = deg;
@@ -282,9 +283,16 @@ degree_count * countOfAllDegrees(Node * graph[], int ver){
 				dc1_end->next = NULL;
 			}
 		}
-
+		
 	}
-
+/*	if(ver == 7 ){
+			degree_count * tr = dc1_start;
+			while(tr != NULL){
+				cout << tr->degree << " " << tr->count << endl;
+				tr = tr->next;
+			}
+		}
+		*/
 	return dc1_start;
 }
 
@@ -299,9 +307,11 @@ int length(degree_count * t){
 }
 
 bool equalCountOfEqualDegrees(degree_count * dc1, degree_count * dc2){
+	
 	int len_dc1 = length(dc1);
 	int len_dc2 = length(dc2);
-	bool result;
+	//cout << len_dc1 << " " << len_dc2 << endl;
+	bool result = false;
 	if(len_dc1 == len_dc2){
 		degree_count * trav1 = dc1;
 		while(trav1 != NULL){
@@ -310,7 +320,7 @@ bool equalCountOfEqualDegrees(degree_count * dc1, degree_count * dc2){
 
 			degree_count * trav2 = dc2;
 			bool found = false;
-			while(dc2 != NULL){
+			while(trav2 != NULL){
 				if(trav2->degree == degri && trav2->count == cnt){
 					found = true;
 					break;
