@@ -1,7 +1,7 @@
-# Data-Structures-Final-Project
+# Graph Properties Analyzer
 Final project for data structures
-Following is the breakdown of all that which we are supposed to do in the project
-## The graph
+
+## What the program can do
 - [x] has n vertices
 - [x] has m edges
 - [x] filing to store the graph
